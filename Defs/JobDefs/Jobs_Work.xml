@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<JobDefs>
+
+  <JobDef>
+    <defName>JobDef_IceMine</defName>
+    <driverClass>IceIsNice.JobDriver_IceMine</driverClass>
+    <reportString>digging at TargetA.</reportString>
+	<alwaysShowWeapon>false</alwaysShowWeapon>
+  </JobDef>
+  
+</JobDefs>

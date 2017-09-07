@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<WorkGivers>
+	<WorkGiverDef>
+		<defName>IceMine</defName>
+		<label>icemine</label>
+		<giverClass>IceIsNice.WorkGiver_IceMine</giverClass>
+		<workType>Mining</workType>
+		<priorityInType>75</priorityInType>
+		<verb>mine</verb>
+		<gerund>ice mining</gerund>
+		<tagToGive>Fieldwork</tagToGive>
+		<requiredCapacities>
+			<li>Manipulation</li>
+		</requiredCapacities>
+		<scanThings>false</scanThings>
+		<scanCells>true</scanCells>
+	</WorkGiverDef>
+</WorkGivers>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<IceIsNice.IceMiningZone>Ice Mining Zone</IceIsNice.IceMiningZone>
+	<IceIsNice.CommandAllowIceMine>Allow Mining</IceIsNice.CommandAllowIceMine>
+	<IceIsNice.CommandAllowIceMineDesc>Toggle the ability for colonists to mine ice.</IceIsNice.CommandAllowIceMineDesc>
+	<IceIsNice.IceMineZone>Ice Mining zone</IceIsNice.IceMineZone>
+	<IceIsNice.DesignatorIceMineZoneDesc>Create a zone where your colonists will mine out ice.</IceIsNice.DesignatorIceMineZoneDesc>
+</LanguageData>

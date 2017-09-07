@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Patch>
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/DesignationCategoryDef[2]/specialDesignatorClasses</xpath>
+		<value><li>IceIsNice.Designator_ZoneAdd_IceMine</li></value>
+	</Operation>
+</Patch>
