@@ -1,13 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 using RimWorld;
-using System.Reflection;
+using System.Text;
 
 namespace IceIsNice
 {
+
+	public class CompMelterExtended : CompMelter
+	{
+		public override string CompInspectStringExtra()
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			float temp = this.parent.AmbientTemperature;
+			if (temp <= 0f)
+			{
+				stringBuilder.Append("IceIsNice.Frozen".Translate() + ".");
+			}
+			else
+			{
+				stringBuilder.Append("IceIsNice.Melting".Translate() + ".");
+			}
+			return stringBuilder.ToString();
+		}
+	}
 
 	public class Zone_IceMine : Zone
 	{
@@ -116,7 +133,6 @@ namespace IceIsNice
 					return false;
 				}
 			}
-			Log.Warning(base.Map.Biome.defName);
 			return false;
 		}
 
@@ -130,13 +146,17 @@ namespace IceIsNice
 	public class JobDriver_IceMine : JobDriver
 	{
 		private float workLeft = -1000f;
+		private int ticksToPickHit = -1000;
+		private int BaseTicksBetweenPickHits = 120;
 		protected bool clearSnow = true;
+
+		private Effecter effecter;
 
 		protected int BaseWorkAmount
 		{
 			get
 			{
-				return 200;
+				return 7;
 			}
 		}
 
@@ -156,13 +176,25 @@ namespace IceIsNice
 			Toil doWork = new Toil();
 			doWork.initAction = delegate
 			{
-				this.workLeft = (float)this.BaseWorkAmount;
+				this.workLeft = this.BaseWorkAmount;
+				this.ticksToPickHit = this.BaseTicksBetweenPickHits;
 			};
 			doWork.tickAction = delegate
 			{
 				Pawn actor = this.CurToil.actor;
-				float num = (this.SpeedStat == null) ? 1f : this.pawn.GetStatValue(this.SpeedStat, true);
-				this.workLeft -= num;
+				this.ticksToPickHit--;
+				if (this.ticksToPickHit <= 0f)
+				{
+					float num = (this.SpeedStat == null) ? 1f : this.pawn.GetStatValue(this.SpeedStat, true);
+					this.workLeft -= num;
+                    this.ticksToPickHit = this.BaseTicksBetweenPickHits;
+					if (this.effecter == null)
+					{
+						this.effecter = EffecterDefOf.Mine.Spawn();
+					}
+					TargetInfo tar = new TargetInfo(this.TargetLocA, this.Map);
+					this.effecter.Trigger(actor, tar);
+				}
 				if (actor.skills != null)
 				{
 					actor.skills.Learn(SkillDefOf.Mining, 0.11f, false);
@@ -178,7 +210,7 @@ namespace IceIsNice
 					actor.records.Increment(RecordDefOf.CellsMined);
 					//GenSpawn.Spawn(DefDatabase<ThingDef>.GetNamed(IceThingDef.Ice, true), this.TargetLocA, this.Map);
 					Thing yield = ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed(IceThingDef.Ice, true), null);
-					yield.stackCount = 2;
+					yield.stackCount = 3;
 					GenPlace.TryPlaceThing(yield, this.TargetLocA, this.Map, ThingPlaceMode.Near, null);
 					this.ReadyForNextToil();
 					return;
